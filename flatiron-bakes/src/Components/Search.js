@@ -1,7 +1,7 @@
 
-const Search = () => {
+const Search = ({ search, handleSearch }) => {
     return (
-        <div>Search</div>
+        <input onChange={handleSearch} type="text" value={search}></input>
     )
 }
 
