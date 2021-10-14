@@ -12,7 +12,7 @@ function App() {
 
   function handleSearch(event) {
     setSearch(event.target.value)
-    setCakeList(cakes.filter(cake => cake.flavor.includes(event.target.value)))
+    setCakeList(cakes.filter(cake => cake.flavor.toLowerCase().includes(event.target.value.toLowerCase())))
   }
 
 
