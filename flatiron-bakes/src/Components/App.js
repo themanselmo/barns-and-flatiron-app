@@ -5,14 +5,26 @@ import Search from "./Search"
 import CakeDetail from "./CakeDetail"
 import Form from "./Form"
 
-import { useState } from "react"
-import {cakes} from "../data/cakesData"
+import { useState, useEffect } from "react"
+// import {cakes} from "../data/cakesData"
 
 function App() {
 
   const [search, setSearch] = useState('')
-  const [cakeList, setCakeList] = useState(cakes)
+  const [cakes, setCakes] = useState([])
+  const [cakeList, setCakeList] = useState([])
   const [selectedCake, setSelectedCake] = useState(null)
+  const [visible, setVisible] = useState(true)
+
+  useEffect(() => {
+    fetch('http://localhost:4000/cakes')
+      .then(res => res.json())
+      .then(cakes => {
+        setCakes(cakes)
+        setCakeList(cakes)
+        console.log(cakes)
+      })
+  }, [])
 
   function handleSearch(event) {
     setSearch(event.target.value)
@@ -32,7 +44,8 @@ function App() {
     <div className="App">
       <Header bakery={"flatiron bakery"} slogan={"yum!"}/>
       {selectedCake?<CakeDetail selectedCake={selectedCake} />:null}
-      <Form handleAddCake={handleAddCake}/>
+      <button onClick={() => setVisible(!visible)}>{visible ? "Hide Form" : "Show Form"}</button>
+      {visible ? <Form handleAddCake={handleAddCake}/> : null}
       <Search search={search} handleSearch={handleSearch}/>
       <CakeContainer cakeList={cakeList} handleCakeClick={handleCakeClick}/>
     </div>

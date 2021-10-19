@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const Form = ({ handleAddCake }) => {
     // const [flavor, setFlavor] = useState('')
@@ -12,6 +12,14 @@ const Form = ({ handleAddCake }) => {
         size: '',
         price: ''
     })
+
+    useEffect(() => {
+        console.log(formData)
+
+        return () => {
+            console.log('form removed')
+        }
+    }, [formData])
 
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value})
