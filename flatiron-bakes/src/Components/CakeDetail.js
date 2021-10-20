@@ -1,4 +1,4 @@
-const CakeDetail = ({selectedCake: {flavor, size= '6" cake', price, image, description}}) => {
+const CakeDetail = ({selectedCake, handleDelete, selectedCake: {flavor, size= '6" cake', price, image, description}}) => {
     return(
         <>
             <img src={image} />
@@ -6,6 +6,7 @@ const CakeDetail = ({selectedCake: {flavor, size= '6" cake', price, image, descr
             <p>Size: {size}</p>
             <p>Price: {price}</p>
             <p>{description}</p>
+            <button onClick={() => handleDelete(selectedCake)}>Delete</button>
         </>
     )
 }

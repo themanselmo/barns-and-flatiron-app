@@ -17,7 +17,7 @@ function App() {
   const [visible, setVisible] = useState(true)
 
   useEffect(() => {
-    fetch('http://localhost:4000/cakes')
+    fetch('http://localhost:3000/cakes')
       .then(res => res.json())
       .then(cakes => {
         setCakes(cakes)
@@ -25,6 +25,38 @@ function App() {
         console.log(cakes)
       })
   }, [])
+
+  const handleDelete = (deletedCake) => {
+    console.log(deletedCake)
+    fetch(`http://localhost:3000/cakes/${deletedCake.id}`, {
+      method: 'DELETE'
+    })
+    .then(() => {
+      const filteredCakes = cakes.filter(cake => cake.id !== deletedCake.id)
+      setCakes(filteredCakes)
+      setCakeList(filteredCakes)
+      setSelectedCake(null)
+    })
+  }
+
+  function handleUpdate(updatedCake) {
+    fetch(`http://localhost:3000/cakes/${updatedCake.id}`,{
+      method: "PATCH",
+      body: !updatedCake.like
+    })
+      .then(res => res.json())
+      .then(cakeData => {
+        const updatedCakes = cakes.map(item => {
+          if(item.id === cakeData.id){
+            return cakeData
+          } else {
+            return item
+          }
+        })
+        setCakes(updatedCakes)
+      })
+  }
+
 
   function handleSearch(event) {
     setSearch(event.target.value)
@@ -43,7 +75,7 @@ function App() {
   return (
     <div className="App">
       <Header bakery={"flatiron bakery"} slogan={"yum!"}/>
-      {selectedCake?<CakeDetail selectedCake={selectedCake} />:null}
+      {selectedCake?<CakeDetail selectedCake={selectedCake} handleDelete={handleDelete}/>:null}
       <button onClick={() => setVisible(!visible)}>{visible ? "Hide Form" : "Show Form"}</button>
       {visible ? <Form handleAddCake={handleAddCake}/> : null}
       <Search search={search} handleSearch={handleSearch}/>
