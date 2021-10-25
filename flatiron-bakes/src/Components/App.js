@@ -1,3 +1,4 @@
+import {Route, Switch} from "react-router-dom"
 
 import CakeContainer from "./CakeContainer"
 import Header from "./Header"
@@ -13,7 +14,6 @@ function App() {
   const [search, setSearch] = useState('')
   const [cakes, setCakes] = useState([])
   const [cakeList, setCakeList] = useState([])
-  const [selectedCake, setSelectedCake] = useState(null)
   const [visible, setVisible] = useState(true)
 
   useEffect(() => {
@@ -35,7 +35,6 @@ function App() {
       const filteredCakes = cakes.filter(cake => cake.id !== deletedCake.id)
       setCakes(filteredCakes)
       setCakeList(filteredCakes)
-      setSelectedCake(null)
     })
   }
 
@@ -65,7 +64,7 @@ function App() {
 
   const handleCakeClick = (cake) => {
     console.log(cake)
-    setSelectedCake(cake)
+
   }
 
   const handleAddCake = (cake) => {
@@ -75,11 +74,21 @@ function App() {
   return (
     <div className="App">
       <Header bakery={"flatiron bakery"} slogan={"yum!"}/>
-      {selectedCake?<CakeDetail selectedCake={selectedCake} handleDelete={handleDelete}/>:null}
-      <button onClick={() => setVisible(!visible)}>{visible ? "Hide Form" : "Show Form"}</button>
-      {visible ? <Form handleAddCake={handleAddCake}/> : null}
-      <Search search={search} handleSearch={handleSearch}/>
-      <CakeContainer cakeList={cakeList} handleCakeClick={handleCakeClick}/>
+      <Switch>
+        <Route path="/cakes/new">
+          <Form handleAddCake={handleAddCake}/>
+        </Route>
+        <Route path="/cakes/:id">
+          <CakeDetail handleDelete={handleDelete}/>
+        </Route>
+        <Route path="/cakes">
+          <Search search={search} handleSearch={handleSearch}/>
+          <CakeContainer cakeList={cakeList} handleCakeClick={handleCakeClick}/>
+        </Route>
+      </Switch>
+      {/* <CakeDetail selectedCake={selectedCake} handleDelete={handleDelete}/> */}
+      
+      
     </div>
   );
 }

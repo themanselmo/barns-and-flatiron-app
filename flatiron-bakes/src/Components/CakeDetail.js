@@ -1,4 +1,25 @@
-const CakeDetail = ({selectedCake, handleDelete, selectedCake: {flavor, size= '6" cake', price, image, description}}) => {
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+
+const CakeDetail = ({selectedCake, handleDelete}) => {
+    const [cake, setCake] = useState(null)
+    const [isLoaded, setIsLoaded] = useState(false)
+
+    const id = useParams().id
+
+    useEffect(() => {
+        console.log(id)
+        fetch(`http://localhost:3000/cakes/${id}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            setCake(data)
+            setIsLoaded(true)
+        })
+    }, [])
+
+    if(!isLoaded) return <h1>Loading...</h1>
+    const {image, flavor, size, price, description} = cake
     return(
         <>
             <img src={image} />
