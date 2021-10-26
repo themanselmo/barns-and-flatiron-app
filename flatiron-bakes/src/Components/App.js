@@ -73,7 +73,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header bakery={"flatiron bakery"} slogan={"yum!"}/>
+      <Header bakery={"Flatiron Bakery"} slogan={"The Best Cakes Around"}/>
       <Switch>
         <Route path="/cakes/new">
           <Form handleAddCake={handleAddCake}/>
